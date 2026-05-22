@@ -1,0 +1,20 @@
+# Root .htaccess
+# Ana domain'e girildiğinde public/ klasörüne yönlendir
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Eğer istek public klasörü için değilse
+    RewriteCond %{REQUEST_URI} !^/public/
+    # public klasörüne yönlendir
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Hassas dosyalara erişimi engelle
+<FilesMatch "^(\.env|config\.php|database\.sql|\.git.*|composer\.(json|lock))$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Directory browsing'i kapat
+Options -Indexes

@@ -82,17 +82,24 @@ class Page extends BaseModel {
      * @return bool
      */
     public function updateSection($pageKey, $sectionKey, $data) {
-        $sql = "UPDATE page_sections 
-                SET title_tr = ?, title_en = ?, content_tr = ?, content_en = ?, updated_at = NOW()
-                WHERE page_key = ? AND section_key = ?";
+        // UPSERT: Kayıt varsa güncelle, yoksa yeni oluştur
+        $sql = "INSERT INTO page_sections 
+                    (page_key, section_key, title_tr, title_en, content_tr, content_en, section_order, is_active, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, 0, 1, NOW())
+                ON DUPLICATE KEY UPDATE
+                    title_tr = VALUES(title_tr),
+                    title_en = VALUES(title_en),
+                    content_tr = VALUES(content_tr),
+                    content_en = VALUES(content_en),
+                    updated_at = NOW()";
         
         $params = [
+            $pageKey,
+            $sectionKey,
             $data['title_tr'] ?? '',
             $data['title_en'] ?? '',
             $data['content_tr'] ?? '',
-            $data['content_en'] ?? '',
-            $pageKey,
-            $sectionKey
+            $data['content_en'] ?? ''
         ];
         
         $stmt = $this->db->prepare($sql);

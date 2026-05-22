@@ -8,6 +8,9 @@
 
 -- USE navexmar;
 
+-- Yabancı anahtar kontrollerini geçici olarak kapat
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ==========================================
 -- 1. ADMIN TABLOSU
 -- ==========================================
@@ -260,6 +263,9 @@ INSERT INTO settings (setting_key, setting_value, setting_group, description) VA
 ('seo_meta_description_en', 'Navexmar is a maritime company providing ship maintenance and international trade services.', 'seo', 'Site açıklaması (EN)'),
 ('seo_meta_keywords', 'gemi bakımı, ship maintenance, denizcilik, maritime, lojistik, logistics', 'seo', 'Anahtar kelimeler'),
 ('google_analytics', '', 'seo', 'Google Analytics ID');
+
+-- Yabancı anahtar kontrollerini tekrar aç
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- ==========================================
 -- TAMAMLANDI!
